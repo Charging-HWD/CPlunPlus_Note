@@ -1,9 +1,27 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <stdlib.h>
 int count = 0;
 std::string Message = "";
- 
+
+// Windows下通过 API 函数获取文件路径
+void GetPath()
+{
+    char szModulePath[_MAX_PATH];
+	   char szDriveName[_MAX_DRIVE];
+	   char szDirName[_MAX_PATH];
+	   char szFileName[_MAX_PATH];
+	   char szFileExt[_MAX_PATH];
+	   GetModuleFileName(NULL, szModulePath, _MAX_PATH);
+	   _splitpath(szModulePath, szDriveName, szDirName, szFileName, szFileExt);
+	   cout << "当前完整路径：" << szModulePath << endl;
+	   cout << "盘符：" << szDriveName << endl;
+	   cout << "中级文件夹名：" << szDirName << endl;
+	   cout << "文件名：" << szFileName << endl;
+	   cout << "文件扩展名：" << szFileExt << endl;
+}
+
 //读取文件内容，C风格
 int ReadFile(char* FileName, char** Buf, char* ResponseData)
 {
