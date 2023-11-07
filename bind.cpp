@@ -1,11 +1,17 @@
+/*
+ä½¿ç”¨ std::bind å¯ä»¥å°†å¯è°ƒç”¨å¯¹è±¡å’Œå‚æ•°ä¸€èµ·ç»‘å®šï¼Œç»‘å®šåçš„ç»“æœä½¿ç”¨ std::function è¿›è¡Œä¿å­˜ï¼Œå¹¶å»¶è¿Ÿè°ƒç”¨åˆ°ä»»ä½•æˆ‘ä»¬éœ€è¦çš„æ—¶å€™ã€‚
+std::bind é€šå¸¸æœ‰ä¸¤å¤§ä½œç”¨ï¼š
+å°†å¯è°ƒç”¨å¯¹è±¡ä¸å‚æ•°ä¸€èµ·ç»‘å®šä¸ºå¦ä¸€ä¸ª std::function ä¾›è°ƒç”¨
+å°† n å…ƒå¯è°ƒç”¨å¯¹è±¡è½¬æˆ m(m < n)å…ƒå¯è°ƒç”¨å¯¹è±¡ï¼Œç»‘å®šä¸€éƒ¨åˆ†å‚æ•°ï¼Œè¿™é‡Œéœ€è¦ä½¿ç”¨ std::placeholders
+*/
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <functional>
 
-
 /*
-´íÎóÊ¾Àı£º
+é”™è¯¯ç¤ºä¾‹ï¼š
 void function(int i,const char* str)
 {
 	std::cout << str << i << std::endl;
@@ -15,13 +21,13 @@ void main()
 	std::vector<int> number{ 1,2,3,4,5 };
 	std::for_each(number.begin(), number.end(), std::bind(function, "Element:"));
 }
-º¯ÊıËµÃ÷£ºÊ¹ÓÃ std::bind ½« function º¯Êı°ó¶¨µ½ "Element:" ×Ö·û´®ÉÏ£¬ÒÔ´´½¨Ò»¸öĞÂµÄº¯Êı¶ÔÏó¡£
-È»ºóÊ¹ÓÃ std::for_each Ëã·¨±éÀú number ÈİÆ÷£¬²¢¶ÔÃ¿¸öÔªËØÓ¦ÓÃ¸Ãº¯Êı¶ÔÏó¡£
+å‡½æ•°è¯´æ˜ï¼šä½¿ç”¨ std::bind å°† function å‡½æ•°ç»‘å®šåˆ° "Element:" å­—ç¬¦ä¸²ä¸Šï¼Œä»¥åˆ›å»ºä¸€ä¸ªæ–°çš„å‡½æ•°å¯¹è±¡ã€‚
+ç„¶åä½¿ç”¨ std::for_each ç®—æ³•éå† number å®¹å™¨ï¼Œå¹¶å¯¹æ¯ä¸ªå…ƒç´ åº”ç”¨è¯¥å‡½æ•°å¯¹è±¡ã€‚
 
-std::bind Ä¬ÈÏ½«°ó¶¨²ÎÊı´«µİ¸øÄ¿±êº¯ÊıµÄÎ²²¿²ÎÊı£¬
-Òò´ËÔÚÕâÖÖÇé¿öÏÂ£¬"Element:" ×Ö·û´®½«±»°ó¶¨µ½ function º¯ÊıµÄµÚ¶ş¸ö²ÎÊıÉÏ¡£
-µ«ÊÇ¸ù¾İÄúµÄ function º¯Êı¶¨Òå£¬i ÊÇµÚÒ»¸ö²ÎÊı£¬¶ø str ÊÇµÚ¶ş¸ö²ÎÊı¡£
-Òò´Ë£¬ĞèÒª½»»»²ÎÊıµÄË³Ğò£¬ÒÔ±ãÕıÈ·°ó¶¨²ÎÊı¡£
+std::bind é»˜è®¤å°†ç»‘å®šå‚æ•°ä¼ é€’ç»™ç›®æ ‡å‡½æ•°çš„å°¾éƒ¨å‚æ•°ï¼Œ
+å› æ­¤åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œ"Element:" å­—ç¬¦ä¸²å°†è¢«ç»‘å®šåˆ° function å‡½æ•°çš„ç¬¬äºŒä¸ªå‚æ•°ä¸Šã€‚
+ä½†æ˜¯æ ¹æ®æ‚¨çš„ function å‡½æ•°å®šä¹‰ï¼Œi æ˜¯ç¬¬ä¸€ä¸ªå‚æ•°ï¼Œè€Œ str æ˜¯ç¬¬äºŒä¸ªå‚æ•°ã€‚
+å› æ­¤ï¼Œéœ€è¦äº¤æ¢å‚æ•°çš„é¡ºåºï¼Œä»¥ä¾¿æ­£ç¡®ç»‘å®šå‚æ•°ã€‚
 */
 
 void function1(const char* str, int i)
@@ -34,23 +40,66 @@ void function2(int i, const char* str)
 	std::cout << str << i << std::endl;
 }
 
+void f(int n1, int n2, int n3, const int& n4, int n5) {
+	std::cout << n1 << ' ' << n2 << ' ' << n3 << ' ' << n4 << ' ' << n5 << std::endl;
+}
+
+int g(int n1) { return n1; }
+
+struct Foo {
+	void print_sum(int n1, int n2) { std::cout << n1 + n2 << std::endl; }
+	int data = 10;
+};
+
 int main()
 {
 	std::vector<int> number{ 1,2,3,4,5 };
 
 	/*
-	Ê¹ÓÃ std::bind ½« "Element:" ×Ö·û´®°ó¶¨µ½º¯Êı¶ÔÏóµÄµÚÒ»¸ö²ÎÊı£¬Ê¹ÓÃ std::placeholders::_1 ±íÊ¾½«À´´«ÈëµÄµÚ¶ş¸ö²ÎÊı¡£
-	Í¨¹ıµ÷ÓÃ std::for_each Ëã·¨±éÀú numbers ÈİÆ÷£¬²¢¶ÔÃ¿¸öÔªËØÓ¦ÓÃ¸Ãº¯Êı¶ÔÏó¡£
+	ä½¿ç”¨ std::bind å°† "Element:" å­—ç¬¦ä¸²ç»‘å®šåˆ°å‡½æ•°å¯¹è±¡çš„ç¬¬ä¸€ä¸ªå‚æ•°ï¼Œä½¿ç”¨ std::placeholders::_1 è¡¨ç¤ºå°†æ¥ä¼ å…¥çš„ç¬¬äºŒä¸ªå‚æ•°ã€‚
+	é€šè¿‡è°ƒç”¨ std::for_each ç®—æ³•éå† numbers å®¹å™¨ï¼Œå¹¶å¯¹æ¯ä¸ªå…ƒç´ åº”ç”¨è¯¥å‡½æ•°å¯¹è±¡ã€‚
 	*/
 	std::for_each(number.begin(), number.end(), std::bind(function1, "Element:", std::placeholders::_1));
-
+	std::cout << "***********************************\n" << std::endl;
 	/*
-	Ê¹ÓÃ std::bind ½« "Element:" ×Ö·û´®°ó¶¨µ½º¯Êı¶ÔÏóµÄµÚ¶ş¸ö²ÎÊı£¬Ê¹ÓÃ std::placeholders::_1 ±íÊ¾½«À´´«ÈëµÄµÚÒ»¸ö²ÎÊı¡£
-	Í¨¹ıµ÷ÓÃ std::for_each Ëã·¨±éÀú numbers ÈİÆ÷£¬²¢¶ÔÃ¿¸öÔªËØÓ¦ÓÃ¸Ãº¯Êı¶ÔÏó¡£
+	ä½¿ç”¨ std::bind å°† "Element:" å­—ç¬¦ä¸²ç»‘å®šåˆ°å‡½æ•°å¯¹è±¡çš„ç¬¬äºŒä¸ªå‚æ•°ï¼Œä½¿ç”¨ std::placeholders::_1 è¡¨ç¤ºå°†æ¥ä¼ å…¥çš„ç¬¬ä¸€ä¸ªå‚æ•°ã€‚
+	é€šè¿‡è°ƒç”¨ std::for_each ç®—æ³•éå† numbers å®¹å™¨ï¼Œå¹¶å¯¹æ¯ä¸ªå…ƒç´ åº”ç”¨è¯¥å‡½æ•°å¯¹è±¡ã€‚
 	*/
 	std::for_each(number.begin(), number.end(), std::bind(function2, std::placeholders::_1, "Element:"));
+	std::cout << "***********************************\n" << std::endl;
 
 	auto function = std::bind(function1, std::placeholders::_1, std::placeholders::_2);
 	function("Element:", 6);
+	std::cout << "***********************************\n" << std::endl;
+	
+	using namespace std::placeholders;
+	int n = 7;
+	// std::cref(n) ä¸º const int&
+	auto f1 = std::bind(f, _2, 42, _1, std::cref(n), n);
+	n = 10;
+
+	// 1 ä¸º _1 æ‰€ç»‘å®š, 2 ä¸º _2æ‰€ç»‘å®š,ä¸ä½¿ç”¨ 1001
+	f1(1, 2, 1001);// è¿›å…¥åˆ° f(2, 42, 1, n, 7) çš„è°ƒç”¨
+	std::cout << "***********************************\n" << std::endl;
+
+	// åµŒå¥— bind å­è¡¨è¾¾å¼å…±äº«å ä½ç¬¦
+	auto f2 = std::bind(f, _3, std::bind(g, _3), _3, 4, 5);
+	f2(10, 11, 12); // è¿›å…¥åˆ° f(12, g(12), 12, 4, 5);
+	std::cout << "***********************************\n" << std::endl;
+
+	// ç»‘å®šæŒ‡å‘æˆå‘˜å‡½æ•°æŒ‡é’ˆ
+	Foo foo;
+	auto f3 = std::bind(&Foo::print_sum, &foo, 95, _1);
+	f3(5);
+	std::cout << "***********************************\n" << std::endl;
+
+	// ç»‘å®šæŒ‡å‘æ•°æ®æˆå‘˜æŒ‡é’ˆ
+	auto f4 = std::bind(&Foo::data, _1);
+	std::cout << f4(foo) << std::endl;
+	std::cout << "***********************************\n" << std::endl;
+
+	// æ™ºèƒ½æŒ‡é’ˆäº¦èƒ½ç”¨äºè°ƒç”¨è¢«å¼•ç”¨å¯¹è±¡çš„æˆå‘˜
+	std::cout << f4(std::make_shared<Foo>(foo)) << std::endl;
+	std::cout << "***********************************\n" << std::endl;
 	return 0;
 }
